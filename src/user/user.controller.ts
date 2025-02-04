@@ -7,13 +7,16 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { User } from './user.model';
+import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
+  constructor(private userService: UserService) {}
+
   @Get()
-  async findAll(): Promise<any[]> {
-    return [];
+  async findAll() {
+    return this.userService.findAll();
   }
 
   @Get(':id')
@@ -22,13 +25,9 @@ export class UserController {
     return `This action returns a #${id} user`;
   }
 
-  @Post(':id')
-  create(@Body() user: User): string {
-    return 'One user by id';
-  }
   @Put(':id')
   UpdateOneById(@Param('id') id: string, @Body() user: User): string {
-    return `This action updates a #${id} user`;
+    return `This action updates a #${id} ${user}`;
   }
 
   @Delete(':id')

@@ -1,16 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  @Column({ unique: true })
+  @Column()
   username: string;
+
+  @Column({ unique: true })
+  email: string;
 
   @Column()
   password: string;
 
   @Column()
-  sessions: object;
+  role: string;
+
+  @Column('json', { nullable: true })
+  sessions?: object;
 }
