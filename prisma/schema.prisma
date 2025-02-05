@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,18 +14,26 @@ datasource db {
 }
 
 model Session {
-  sessionId       Int      @id @default(autoincrement()) @map("session_id")
-  title           String
-  description     String
-  sessionDate     DateTime @map("session_date")
-  placesRemaining Int      @map("places_remaining")
-  placesAvailable Int      @map("places_available")
-  isFull          Boolean  @default(false) @map("is_full")
-  sportId         Int?     @map("sport_id")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @default(now()) @map("updated_at")
-  sport           Sport?   @relation(fields: [sportId], references: [sportId])
-  users           User[]   @relation("UserSessions")
+  sessionId   Int      @id @default(autoincrement()) @map("session_id")
+  title       String
+  description String
+  sessionDate DateTime @map("session_date")
+  sessionTime DateTime @map("session_time")
+
+  placesRemaining Int     @map("places_remaining")
+  placesAvailable Int     @map("places_available")
+  isFull          Boolean @map("is_full")
+
+  // Sport relation
+  sport        Sport? @relation(fields: [sportSportId], references: [sportId])
+  sportSportId Int?
+
+  // User relation
+  User       User? @relation(fields: [userUserId], references: [userId])
+  userUserId Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("sessions")
 }
@@ -38,11 +52,12 @@ model User {
 }
 
 model Sport {
-  sportId   Int       @id @default(autoincrement()) @map("sport_id")
-  name      String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @map("updated_at")
-  sessions  Session[]
+  sportId  Int       @id @default(autoincrement()) @map("sport_id")
+  name     String
+  sessions Session[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("sports")
 }
