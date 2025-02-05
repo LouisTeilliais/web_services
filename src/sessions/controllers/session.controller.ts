@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Query
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import SessionControllerService from '../services/controllers/session.controller.service';
@@ -24,11 +25,15 @@ export default class SessionController {
     private readonly sessionControllerService: SessionControllerService,
   ) {}
 
-  @Get()
-  @Roles('user', 'coach')
-  async getAllSessions() {
-    return this.sessionControllerService.getAllSession();
-  }
+    @Get()
+    async getAllSessions(
+        @Query("title") title?: string,
+        @Query("longitude") longitude?: number,
+        @Query("latitude") latitude?: number,
+        @Query("distance") distance?: string
+    ) {
+        return this.sessionControllerService.getAllSession(title, longitude, latitude, distance);
+    }
 
   @Get(':sessionId')
   @Roles('coach')

@@ -38,4 +38,10 @@ export default class SessionEntity extends BaseEntity {
 
     @ApiProperty()
     userId?: number
+
+    @ApiProperty()
+    lattitude?: number
+
+    @ApiProperty()
+    longitude?: number
 }
