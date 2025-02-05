@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "😺 Nest",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run start:dev",
+            "presentation": {
+              "order": 2
+            }
+        },
+    ]
+}
