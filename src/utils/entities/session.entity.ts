@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import BaseEntity from "./_base.entity";
+import SportEntity from "./sport.entity";
 
 
 export default class SessionEntity extends BaseEntity {
@@ -24,4 +25,14 @@ export default class SessionEntity extends BaseEntity {
 
     @ApiProperty()
     isFull: boolean
+
+    @ApiProperty({ type: () => [SportEntity] })
+    sport: SportEntity
+
+    @ApiProperty()
+    sportId: number
+
+    // @ApiProperty({ type: () => [UserEntity], required: false })
+    // users?: UserEntity[]; 
+
 }
