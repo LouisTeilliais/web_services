@@ -8,14 +8,14 @@ import {
   Post,
   Put,
   UseGuards,
-  Query
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import SessionControllerService from '../services/controllers/session.controller.service';
 import { SessionDto } from '../models/session.dto';
 import { AuthGuard } from '../../auth/guard/auth.guard';
-import {Roles} from "../../auth/roles.decorator";
-import {RoleGuard} from "../../auth/guard/role.guard";
+import { Roles } from '../../auth/roles.decorator';
+import { RoleGuard } from '../../auth/guard/role.guard';
 
 @ApiTags('Sessions')
 @Controller('sessions')
@@ -25,15 +25,20 @@ export default class SessionController {
     private readonly sessionControllerService: SessionControllerService,
   ) {}
 
-    @Get()
-    async getAllSessions(
-        @Query("title") title?: string,
-        @Query("longitude") longitude?: number,
-        @Query("latitude") latitude?: number,
-        @Query("distance") distance?: string
-    ) {
-        return this.sessionControllerService.getAllSession(title, longitude, latitude, distance);
-    }
+  @Get()
+  async getAllSessions(
+    @Query('title') title?: string,
+    @Query('longitude') longitude?: number,
+    @Query('latitude') latitude?: number,
+    @Query('distance') distance?: string,
+  ) {
+    return this.sessionControllerService.getAllSession(
+      title,
+      longitude,
+      latitude,
+      distance,
+    );
+  }
 
   @Get(':sessionId')
   @Roles('coach')
