@@ -12,6 +12,6 @@ export default class UserEntity {
   email: string;
 
   @ApiProperty({ type: () => [SessionEntity] })
-  sessions: SessionEntity[]; 
+  sessions?: SessionEntity[]; 
   
 }

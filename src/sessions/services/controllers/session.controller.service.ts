@@ -17,7 +17,7 @@ export default class SessionControllerService {
     }
 
     async getSessionById(sessionId: SessionEntity["sessionId"]) : Promise<SessionEntity> {
-        const session = await this.sessionRepositoryService.findOne(sessionId)
+        const session = await this.sessionRepositoryService.findById(sessionId)
 
         return session
     }
@@ -34,5 +34,32 @@ export default class SessionControllerService {
                 sportId: sessionDto.sportId
             }
         )
+    }
+
+    async updateSession(sessionId: SessionEntity["sessionId"], sessionDto: SessionDto): Promise<SessionEntity> {
+        return this.sessionRepositoryService.updateSession(
+            sessionId,
+            {
+                title: sessionDto.title,
+                description: sessionDto.description,
+                sessionDate: sessionDto.sessionDate,
+                placesRemaining: sessionDto.placesRemaining,
+                placesAvailable: sessionDto.placesAvailable,
+                sportId: sessionDto.sportId
+            }
+        )
+    }
+
+    async deleteSession(sessionId: SessionEntity["sessionId"]) {
+        return this.sessionRepositoryService.deleteSession(sessionId)
+    }
+
+
+    async addUserToSession(sessionId: SessionEntity["sessionId"], userId: SessionEntity["userId"]) {
+        return this.sessionRepositoryService.addUserToSession(sessionId, userId)
+    }
+
+    async leaveSession(sessionId: SessionEntity["sessionId"], userId: SessionEntity["userId"]) {
+        return this.sessionRepositoryService.leaveSession(sessionId, userId)
     }
 }
