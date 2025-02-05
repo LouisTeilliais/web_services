@@ -16,8 +16,8 @@ export class AuthService {
       throw new Error('Cet email est déjà utilisé.');
     }
 
-    if (!['formateur', 'etudiant'].includes(role)) {
-      throw new Error('"Le rôle doit être "formateur" ou "etudiant"');
+    if (!['coach', 'user'].includes(role)) {
+      throw new Error('"Le rôle doit être "coach" ou "user"');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,10 +32,10 @@ export class AuthService {
   }
 
   async login(
-    name: string,
+    email: string,
     password: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.userService.findOne(name);
+    const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
     }
@@ -44,6 +44,7 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
     }
+    console.log('🔍 Utilisateur trouvé :', user);
 
     const payload = { userId: user.userId, role: user.role };
 

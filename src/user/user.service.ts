@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import {User} from "./user.entity";
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -13,14 +13,20 @@ export class UserService {
     });
   }
   async findOne(username: string): Promise<User> {
-    return this.prisma.user.findFirst({ where: { name: username },});
+    return this.prisma.user.findFirst({ where: { name: username } });
   }
 
   async findAll() {
     return this.prisma.user.findMany();
   }
 
-  async findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+  async findByEmail(email: string): Promise<User | null> {
+    if (!email) {
+      throw new Error("L'email fourni est invalide ou manquant.");
+    }
+
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
   }
 }
