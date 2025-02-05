@@ -24,6 +24,12 @@ jobs:
       - name: 🔨 Build the project
         run: npm run build  # S'assure que l'application est compilée
 
+      - name: 🔑 Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
