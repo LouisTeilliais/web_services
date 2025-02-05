@@ -30,7 +30,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
 
-      - name: 🚀 Deploy to Azure App Service
+      - name: 🚀 Deploy to Azure App Service.
         uses: azure/webapps-deploy@v2
         with:
           app-name: "Webservices"  # Remplace avec le nom exact de ton App Service Azure
