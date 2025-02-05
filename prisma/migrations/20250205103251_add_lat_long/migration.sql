@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "sessions" ADD COLUMN     "lattitude" DOUBLE PRECISION DEFAULT 0,
+ADD COLUMN     "longitude" DOUBLE PRECISION DEFAULT 0;

@@ -24,6 +24,8 @@ model Session {
   sportId         Int?     @map("sport_id")
   sport           Sport?   @relation(fields: [sportId], references: [sportId])
   users           User[]   @relation("UserSessions")
+  latitude        Float?   @map("latitude")
+  longitude       Float?   @map("longitude")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

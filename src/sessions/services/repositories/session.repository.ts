@@ -13,9 +13,27 @@ export default class SessionRepositoryService {
 
     constructor(private readonly dbService: PrismaService) {}
 
-    public async findMany() {
+    public async findMany(longitude?: number, latitude?: number, distance?: number) : Promise<SessionEntity[]> {
+        
+        // if (!longitude || !latitude || !distance) {
+        //     return this.dbService.session.findMany({
+        //         include: this.include
+        //     })
+        // }
+        
+        // const sessions = await this.dbService.$queryRaw`
+        //     SELECT *
+        //     FROM sessions
+        //     WHERE ST_DWithin(
+        //         location, 
+        //         ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326), 
+        //         ${distance * 1000}
+        //     )
+        // `;
+
+        // return sessions
+        
         return this.dbService.session.findMany({
-            
             include: this.include
         })
     }
