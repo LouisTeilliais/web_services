@@ -1,0 +1,34 @@
+name: Deploy NestJS to Azure App Service
+
+on:
+  push:
+    branches:
+      - deployement  # Déclenche le workflow sur push dans la branche main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: 📌 Install dependencies
+        run: npm install
+
+      - name: 🔨 Build the project
+        run: npm run build  # S'assure que l'application est compilée
+
+      - name: 🚀 Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "Webservices"  # Remplace avec le nom exact de ton App Service Azure
+          package: "."
+
+      - name: ✅ Post-deployment check
+        run: echo "✅ Déploiement terminé avec succès !"

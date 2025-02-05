@@ -12,3 +12,55 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ADMIN
+  COACH
+  UTILISATEUR
+}
+
+model Session {
+  sessionId   Int      @id @default(autoincrement()) @map("session_id")
+  title       String
+  sessionDate DateTime @map("session_date")
+  sessionTime DateTime @map("session_time")
+
+  placesRemaining Int     @map("places_remaining")
+  placesAvailable Int     @map("places_available")
+  isFull          Boolean @map("is_full")
+
+  // Sport relation
+  sport        Sport? @relation(fields: [sportSportId], references: [sportId])
+  sportSportId Int?
+
+  // User relation
+  User       User? @relation(fields: [userUserId], references: [userId])
+  userUserId Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("sessions")
+}
+
+model User {
+  userId Int @id @default(autoincrement()) @map("user_id")
+
+  email    String    @unique
+  role     Role      @default(UTILISATEUR)
+  name     String
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Sport {
+  sportId  Int       @id @default(autoincrement()) @map("sport_id")
+  name     String
+  sessions Session[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("sports")
+}
