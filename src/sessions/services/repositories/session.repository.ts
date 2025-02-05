@@ -13,29 +13,27 @@ export default class SessionRepositoryService {
 
     constructor(private readonly dbService: PrismaService) {}
 
-    public async findMany(longitude?: number, latitude?: number, distance?: number) : Promise<SessionEntity[]> {
+    public async findMany(title?: string, longitude?: number, latitude?: number, distance?: number)  {
         
-        // if (!longitude || !latitude || !distance) {
-        //     return this.dbService.session.findMany({
-        //         include: this.include
-        //     })
-        // }
-        
-        // const sessions = await this.dbService.$queryRaw`
-        //     SELECT *
-        //     FROM sessions
-        //     WHERE ST_DWithin(
-        //         location, 
-        //         ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326), 
-        //         ${distance * 1000}
-        //     )
-        // `;
-
-        // return sessions
-        
+        if (longitude && latitude && distance) {
+            return this.dbService.$queryRaw`
+                SELECT *
+                FROM sessions
+                WHERE ST_DWithin(
+                    ST_SetSRID(ST_MakePoint(CAST(sessions.longitude AS double precision), CAST(sessions.latitude AS double precision)), 4326)::geography,
+                    ST_SetSRID(ST_MakePoint(CAST(${longitude} AS double precision), CAST(${latitude} AS double precision)), 4326)::geography,
+                    ${distance}
+                );
+            `;
+        }
+    
         return this.dbService.session.findMany({
-            include: this.include
-        })
+            where: title ? { title: { contains: title } } : {},
+            include: this.include,
+            orderBy: {
+                sessionId: "asc"
+            }
+        });
     }
 
     public async findById(sessionId: SessionEntity["sessionId"]) : Promise<SessionEntity> {

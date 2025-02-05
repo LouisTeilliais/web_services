@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseFloatPipe, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import SessionControllerService from "../services/controllers/session.controller.service";
 import { SessionDto } from "../models/session.dto";
@@ -12,8 +12,13 @@ export default class SessionController {
 
 
     @Get()
-    async getAllSessions(){
-        return this.sessionControllerService.getAllSession()
+    async getAllSessions(
+        @Query("title") title?: string,
+        @Query("longitude") longitude?: number,
+        @Query("latitude") latitude?: number,
+        @Query("distance") distance?: string 
+    ) {
+        return this.sessionControllerService.getAllSession(title, longitude, latitude, distance);
     }
 
     @Get(":sessionId")

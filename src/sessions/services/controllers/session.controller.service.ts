@@ -10,10 +10,12 @@ export default class SessionControllerService {
     constructor(private readonly sessionRepositoryService: SessionRepositoryService ) {}
 
 
-    async getAllSession(): Promise<SessionEntity[]> {
-        const sessions = await this.sessionRepositoryService.findMany()
+    async getAllSession(title?: SessionEntity["title"], longitude?: number, latitude?: number, distance?: string) {
 
-        return sessions
+        const distanceNumber = distance ? parseInt(distance, 10) : undefined;
+        const sessions = await this.sessionRepositoryService.findMany(title, longitude, latitude, distanceNumber);
+    
+        return sessions;
     }
 
     async getSessionById(sessionId: SessionEntity["sessionId"]) : Promise<SessionEntity> {
