@@ -9,7 +9,8 @@ import {
   Put,
   UseGuards,
   Query,
-} from '@nestjs/common';
+  Req
+} from "@nestjs/common";
 import { ApiTags } from '@nestjs/swagger';
 import SessionControllerService from '../services/controllers/session.controller.service';
 import { SessionDto } from '../models/session.dto';
@@ -48,8 +49,9 @@ export default class SessionController {
 
   @Post()
   @Roles('coach')
-  async createSession(@Body() sessionDto: SessionDto) {
-    return this.sessionControllerService.createSession(sessionDto);
+  async createSession(@Body() sessionDto: SessionDto, @Req() req) {
+    const userId = req.user.userId;
+    return this.sessionControllerService.createSession(sessionDto, userId);
   }
 
   @Put(':sessionId')

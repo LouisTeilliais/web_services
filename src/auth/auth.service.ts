@@ -44,7 +44,6 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
     }
-    console.log('🔍 Utilisateur trouvé :', user);
 
     const payload = { userId: user.userId, role: user.role };
 

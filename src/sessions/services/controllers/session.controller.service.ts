@@ -25,7 +25,7 @@ export default class SessionControllerService {
     }
 
 
-    async createSession(sessionDto: SessionDto): Promise<SessionEntity> {
+    async createSession(sessionDto: SessionDto, userId : number): Promise<SessionEntity> {
         return this.sessionRepositoryService.createSession(
             {
                 title: sessionDto.title,
@@ -33,7 +33,8 @@ export default class SessionControllerService {
                 sessionDate: sessionDto.sessionDate,
                 placesRemaining: sessionDto.placesRemaining,
                 placesAvailable: sessionDto.placesAvailable,
-                sportId: sessionDto.sportId
+                sportId: sessionDto.sportId,
+                userId: userId
             }
         )
     }

@@ -12,8 +12,8 @@ export class UserService {
       data: userData,
     });
   }
-  async findOne(username: string): Promise<User> {
-    return this.prisma.user.findFirst({ where: { name: username } });
+  async findOne(name: string): Promise<User> {
+    return this.prisma.user.findFirst({ where: { name: name } });
   }
 
   async findAll() {

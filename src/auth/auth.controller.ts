@@ -10,14 +10,14 @@ export class AuthController {
   async signup(
     @Body()
     user: {
-      username: string;
+      name: string;
       email: string;
       password: string;
       role: string;
     },
   ) {
     return this.authService.signup(
-      user.username,
+      user.name,
       user.email,
       user.password,
       user.role,

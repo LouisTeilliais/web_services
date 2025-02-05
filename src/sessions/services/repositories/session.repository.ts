@@ -52,8 +52,8 @@ export default class SessionRepositoryService {
         return session
     }
 
-    public async createSession(sessionData : 
-        Pick<SessionEntity, "title" | "description" | "sessionDate" | "placesRemaining" | "placesAvailable"  | "sportId">) : Promise<SessionEntity> {{
+    public async createSession(sessionData :
+        Pick<SessionEntity, "title" | "description" | "sessionDate" | "placesRemaining" | "placesAvailable"  | "sportId" | "userId">) : Promise<SessionEntity> {{
         return this.dbService.session.create({
             data: {
                 title: sessionData.title,
@@ -61,7 +61,8 @@ export default class SessionRepositoryService {
                 sessionDate: sessionData.sessionDate,
                 placesRemaining: sessionData.placesRemaining,
                 placesAvailable: sessionData.placesAvailable,
-                sport: sessionData.sportId ? { connect: { sportId: sessionData.sportId}} : undefined
+                sport: sessionData.sportId ? { connect: { sportId: sessionData.sportId}} : undefined,
+                creator: sessionData.userId ? { connect: { userId: sessionData.userId}} : undefined,
             },
             include: this.include
         })
