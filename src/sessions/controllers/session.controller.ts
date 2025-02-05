@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseFloatPipe, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import SessionControllerService from "../services/controllers/session.controller.service";
 import { SessionDto } from "../models/session.dto";
