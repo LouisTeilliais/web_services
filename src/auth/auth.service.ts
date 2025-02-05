@@ -10,12 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(
-    username: string,
-    email: string,
-    password: string,
-    role: string,
-  ) {
+  async signup(name: string, email: string, password: string, role: string) {
     const existingUser = await this.userService.findByEmail(email);
     if (existingUser) {
       throw new Error('Cet email est déjà utilisé.');
@@ -26,18 +21,21 @@ export class AuthService {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await this.userService.create(
-      username,
+    const user = await this.userService.create({
+      name,
       email,
-      hashedPassword,
+      password: hashedPassword,
       role,
-    );
+    });
 
     return { message: 'Utilisateur créé avec succès.', user };
   }
 
-  async login(email: string, password: string) {
-    const user = await this.userService.findByEmail(email);
+  async login(
+    name: string,
+    password: string,
+  ): Promise<{ access_token: string }> {
+    const user = await this.userService.findOne(name);
     if (!user) {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
     }
@@ -48,8 +46,9 @@ export class AuthService {
     }
 
     const payload = { userId: user.userId, role: user.role };
-    const token = this.jwtService.sign(payload);
 
-    return { message: 'Connexion réussie.', token };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }
