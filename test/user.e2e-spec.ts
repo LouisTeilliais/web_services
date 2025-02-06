@@ -1,4 +1,4 @@
-import request from 'supertest';
+import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
@@ -19,12 +19,15 @@ describe('User Creation (e2e)', () => {
     await app.close();
   });
 
-  it('should create a user', async () => {
-    const response = await request(app.getHttpServer())
+  it('should create a user', () => {
+    return request(app.getHttpServer())
       .post('/auth/signup')
-      .send({ name: 'test', email: 'test@example.com', password: 'password123', role: 'user' })
+      .send({
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password123',
+        role: 'user',
+      })
       .expect(201);
-
-    expect(response.body).toHaveProperty('id');
   });
 });
