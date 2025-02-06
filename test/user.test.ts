@@ -21,8 +21,8 @@ describe('User Creation (e2e)', () => {
 
   it('should create a user', async () => {
     const response = await request(app.getHttpServer())
-      .post('/users')
-      .send({ email: 'test@example.com', password: 'password123' })
+      .post('/auth/signup')
+      .send({ name: 'test', email: 'test@example.com', password: 'password123', role: 'user' })
       .expect(201);
 
     expect(response.body).toHaveProperty('id');
