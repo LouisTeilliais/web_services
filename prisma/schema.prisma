@@ -12,3 +12,50 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Session {
+  sessionId       Int      @id @default(autoincrement()) @map("session_id")
+  title           String
+  description     String
+  sessionDate     DateTime @map("session_date")
+  placesRemaining Int      @map("places_remaining")
+  placesAvailable Int      @map("places_available")
+  isFull          Boolean  @default(false) @map("is_full")
+  sportId         Int?     @map("sport_id")
+  sport           Sport?   @relation(fields: [sportId], references: [sportId])
+  creatorId       Int?     @map("creator_id")
+  creator         User?    @relation(fields: [creatorId], references: [userId])
+  users           User[]   @relation("UserSessions")
+  latitude        Float?   @map("latitude")
+  longitude       Float?   @map("longitude")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("sessions")
+}
+
+model User {
+  userId    Int       @id @default(autoincrement()) @map("user_id")
+  password  String
+  email     String    @unique
+  name      String
+  role      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  sessions  Session[] @relation("UserSessions")
+  Session   Session[]
+
+  @@map("users")
+}
+
+model Sport {
+  sportId  Int       @id @default(autoincrement()) @map("sport_id")
+  name     String
+  sessions Session[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("sports")
+}
