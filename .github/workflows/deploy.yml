@@ -33,7 +33,7 @@ jobs:
           node-version: "22"
 
       - name: 📌 Install dependencies
-        run: npm install
+        run: npm install --force
 
       - name: 🔧 Configure DATABASE_URL for tests
         run: echo "DATABASE_URL=postgresql://test_user:test_password@localhost:5432/test_db" > .env.test
@@ -62,7 +62,7 @@ jobs:
           node-version: "22"
 
       - name: 📌 Install dependencies
-        run: npm install
+        run: npm install --force
 
       - name: 🔨 Build the project
         run: npm run build  # S'assure que l'application est compilée
