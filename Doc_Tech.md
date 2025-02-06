@@ -99,7 +99,7 @@ Pour créer la base de données, nous avons utilisé Prisma comme ORM afin de g�
 
 
 #### V. Modèle de données
-![test](/diagram.png)
+![test](/prisma/diagram.png)
 
 Le schéma Prisma comprend trois tables principales :
 
