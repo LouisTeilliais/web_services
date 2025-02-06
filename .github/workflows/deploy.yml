@@ -1,0 +1,85 @@
+name: Deploy NestJS to Azure App Service
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le workflow sur push dans la branche main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:latest
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_user -d test_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: 📌 Install dependencies
+        run: npm install --force
+
+      - name: 🔄 Run Prisma Migrations on test DB
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+
+      - name: 🔬 Run API tests
+        run: npm run test:e2e
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: 📌 Install dependencies
+        run: npm install --force
+
+      - name: 🔨 Build the project
+        run: npm run build
+
+      - name: 🔄 Run Prisma Migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy
+
+      - name: 🔑 Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+      - name: 🚀 Deploy to Azure App Service.
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "Webservices"  # Remplace avec le nom exact de ton App Service Azure
+          package: "."
+
+      - name: ✅ Post-deployment check
+        run: echo "✅ Déploiement terminé avec succès !"
