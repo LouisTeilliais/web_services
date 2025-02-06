@@ -15,8 +15,20 @@ export default class SessionRepositoryService {
     creator: true,
   };
 
+  /**
+   * @param dbService dbService
+   */
   constructor(private readonly dbService: PrismaService) {}
 
+
+  /**
+   * Find many session
+   * @param title title
+   * @param longitude longitude
+   * @param latitude latitude 
+   * @param distance distance
+   * @returns 
+   */
   public async findMany(
     title?: string,
     longitude?: number,
@@ -45,6 +57,10 @@ export default class SessionRepositoryService {
     });
   }
 
+  /**
+   * @param sessionId sessionId
+   * @returns 
+   */
   public async findById(
     sessionId: SessionEntity['sessionId'],
   ): Promise<SessionEntity> {
@@ -62,6 +78,10 @@ export default class SessionRepositoryService {
     return session;
   }
 
+  /**
+   * @param sessionData sessionData
+   * @returns 
+   */
   public async createSession(
     sessionData: Pick<
       SessionEntity,
@@ -98,6 +118,11 @@ export default class SessionRepositoryService {
     }
   }
 
+  /**
+   * @param sessionId sessionId
+   * @param sessionData sessionData
+   * @returns 
+   */
   public async updateSession(
     sessionId: SessionEntity['sessionId'],
     sessionData: Pick<
@@ -138,6 +163,11 @@ export default class SessionRepositoryService {
     });
   }
 
+  /**
+   * Delete a session
+   * @param sessionId sessionId
+   * @returns 
+   */
   public async deleteSession(sessionId: SessionEntity['sessionId']) {
     const session = await this.findById(sessionId);
 
@@ -152,6 +182,12 @@ export default class SessionRepositoryService {
     });
   }
 
+  /**
+   * Add user to session
+   * @param sessionId sessionId
+   * @param userId userId
+   * @returns 
+   */
   public async addUserToSession(
     sessionId: SessionEntity['sessionId'],
     userId: number,
@@ -194,6 +230,11 @@ export default class SessionRepositoryService {
     });
   }
 
+  /**
+   * @param sessionId sessionId
+   * @param userId userId
+   * @returns 
+   */
   public async leaveSession(
     sessionId: SessionEntity['sessionId'],
     userId: number,

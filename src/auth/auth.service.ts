@@ -10,7 +10,19 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(name: string, email: string, password: string, role: string) {
+  /**
+   * @param name name
+   * @param email email 
+   * @param password password 
+   * @param role role
+   * @returns 
+   */
+  async signup(
+    name: string, 
+    email: string, 
+    password: string, 
+    role: string
+  ) {
     const existingUser = await this.userService.findByEmail(email);
     if (existingUser) {
       throw new Error('Cet email est déjà utilisé.');
@@ -31,6 +43,11 @@ export class AuthService {
     return { message: 'Utilisateur créé avec succès.', user };
   }
 
+  /**
+   * @param email email
+   * @param password password
+   * @returns 
+   */
   async login(
     email: string,
     password: string,

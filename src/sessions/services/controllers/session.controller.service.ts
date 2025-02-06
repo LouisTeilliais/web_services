@@ -11,6 +11,15 @@ export default class SessionControllerService {
     private readonly mailService: MailService,
   ) {}
 
+
+  /**
+   * Get all session
+   * @param title title
+   * @param longitude longitude
+   * @param latitude latitude 
+   * @param distance distance
+   * @returns 
+   */
   async getAllSession(
     title?: SessionEntity['title'],
     longitude?: number,
@@ -26,12 +35,24 @@ export default class SessionControllerService {
     );
   }
 
+
+  /**
+   * Get session by id
+   * @param sessionId sessionId
+   * @returns 
+   */
   async getSessionById(
     sessionId: SessionEntity['sessionId'],
   ): Promise<SessionEntity> {
     return await this.sessionRepositoryService.findById(sessionId);
   }
 
+  /** 
+    * Create a session
+    * @param sessionDto sessionDto
+    * @param userId userId
+    * @returns
+  */
   async createSession(
     sessionDto: SessionDto,
     userId: number,
@@ -49,6 +70,12 @@ export default class SessionControllerService {
     });
   }
 
+
+  /**
+   * @param sessionId sessionId
+   * @param sessionDto sessionDto
+   * @returns 
+   */
   async updateSession(
     sessionId: SessionEntity['sessionId'],
     sessionDto: SessionDto,
@@ -63,10 +90,22 @@ export default class SessionControllerService {
     });
   }
 
+
+  /**
+   * Delete a session
+   * @param sessionId sessionId
+   * @returns 
+   */
   async deleteSession(sessionId: SessionEntity['sessionId']) {
     return this.sessionRepositoryService.deleteSession(sessionId);
   }
 
+  /**
+   * Add user to session
+   * @param sessionId sessionId
+   * @param userId userId
+   * @returns 
+   */
   async addUserToSession(
     sessionId: SessionEntity['sessionId'],
     userId: SessionEntity['userId'],
@@ -94,6 +133,11 @@ export default class SessionControllerService {
     );
   }
 
+  /**
+   * Leave a session
+   * @param sessionId sessionId
+   * @param userId userId
+  */
   async leaveSession(
     sessionId: SessionEntity['sessionId'],
     userId: SessionEntity['userId'],
