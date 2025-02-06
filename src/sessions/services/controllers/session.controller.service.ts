@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import SessionRepositoryService from '../repositories/session.repository';
 import SessionEntity from 'src/utils/entities/session.entity';
 import {SessionDto} from 'src/sessions/models/session.dto';
-import MailService from 'src/mailer/mail.service';
+import MailService from './src/mailer/mail.service';
 
 @Injectable()
 export default class SessionControllerService {
