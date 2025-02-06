@@ -62,7 +62,7 @@ jobs:
         run: npm install --force
 
       - name: 🔨 Build the project
-        run: npm run build  # S'assure que l'application est compilée
+        run: npm run build
 
       - name: 🔄 Run Prisma Migrations
         env:
