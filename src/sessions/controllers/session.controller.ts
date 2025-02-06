@@ -9,8 +9,8 @@ import {
   Put,
   UseGuards,
   Query,
-  Req
-} from "@nestjs/common";
+  Req,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import SessionControllerService from '../services/controllers/session.controller.service';
 import { SessionDto } from '../models/session.dto';

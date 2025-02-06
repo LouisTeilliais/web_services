@@ -34,7 +34,7 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ access_token: string; message: string }> {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Email ou mot de passe incorrect.');
@@ -42,12 +42,13 @@ export class AuthService {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new UnauthorizedException('Email ou mot de passe incorrect.');
+      throw new UnauthorizedException('Mot de passe incorrect.');
     }
 
     const payload = { userId: user.userId, role: user.role };
 
     return {
+      message: 'Token généré avec succès : ',
       access_token: await this.jwtService.signAsync(payload),
     };
   }

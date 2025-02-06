@@ -4,13 +4,18 @@ import {
   Delete,
   Get,
   Param,
-  Post,
+  ParseIntPipe,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { User } from './user.entity';
 import { UserService } from './user.service';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { RoleGuard } from '../auth/guard/role.guard';
 
 @Controller('users')
+@UseGuards(AuthGuard, RoleGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -20,17 +25,20 @@ export class UserController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string): string {
-    return `This action returns a #${id} user`;
+  async findOneById(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return await this.userService.findOne(id);
   }
 
   @Put(':id')
-  UpdateOneById(@Param('id') id: string, @Body() user: User): string {
-    return `This action updates a #${id} ${user}`;
+  async updateOneById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() user: User,
+  ): Promise<User> {
+    return await this.userService.update(id, user);;
   }
 
   @Delete(':id')
-  deleteOneById(@Param('id') id: string): string {
-    return `This action removes a #${id} user`;
+  async deleteOneById(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return await this.userService.delete(id);
   }
 }
