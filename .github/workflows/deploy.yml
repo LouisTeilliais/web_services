@@ -3,7 +3,7 @@ name: Deploy NestJS to Azure App Service
 on:
   push:
     branches:
-      - deployement  # Déclenche le workflow sur push dans la branche main
+      - main  # Déclenche le workflow sur push dans la branche main
 
 jobs:
   test:
