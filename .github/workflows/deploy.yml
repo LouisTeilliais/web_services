@@ -3,7 +3,7 @@ name: Deploy NestJS to Azure App Service
 on:
   push:
     branches:
-      - deployement  # Déclenche le workflow sur push dans la branche main
+      - main  # Déclenche le workflow sur push dans la branche main
 
 jobs:
   build-and-test:
@@ -42,6 +42,11 @@ jobs:
 
       - name: 🔨 Build the project
         run: npm run build  # S'assure que l'application est compilée
+
+      - name: 🔄 Run Prisma Migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy
 
       - name: 🔑 Login to Azure
         uses: azure/login@v1
