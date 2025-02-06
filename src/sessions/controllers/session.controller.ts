@@ -42,7 +42,6 @@ export default class SessionController {
   }
 
   @Get(':sessionId')
-  @Roles('coach')
   async getSessionById(@Param('sessionId', ParseIntPipe) sessionId: number) {
     return this.sessionControllerService.getSessionById(sessionId);
   }
