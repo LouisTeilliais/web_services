@@ -6,8 +6,22 @@ on:
       - main  # Déclenche le workflow sur push dans la branche main
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:latest
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_user -d test_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: 📥 Checkout repository
@@ -21,11 +35,21 @@ jobs:
       - name: 📌 Install dependencies
         run: npm install
 
-      - name: 🔬 Run tests
-        run: npm test  # Assurez-vous que la commande de test est correcte pour votre projet
+      - name: 🔧 Configure DATABASE_URL for tests
+        run: echo "DATABASE_URL=postgresql://test_user:test_password@localhost:5432/test_db" > .env.test
 
-  build-and-deploy:
-    needs: build-and-test
+      - name: 🔄 Run Prisma Migrations on test DB
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+
+      - name: 🔬 Run API tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+
+  deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
