@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from 'nestjs-prisma'
 import { SessionModule } from './sessions/session.module';
 import { MailerModule } from "@nestjs-modules/mailer";
+
+
 @Module({
   imports: [
     SessionModule, 
@@ -12,8 +14,8 @@ import { MailerModule } from "@nestjs-modules/mailer";
           host: "smtp.gmail.com",
           port: 587,
           auth: {
-            user: "louis.teilliais@gmail.com",
-            pass: "aepa zxof dzfn qarh"
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
           }
         },
       }
