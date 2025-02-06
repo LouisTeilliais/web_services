@@ -33,6 +33,7 @@ export default class SessionRepositoryService {
                     ${distance}
                 );
             `;
+
     }
 
     return this.dbService.session.findMany({
@@ -71,6 +72,8 @@ export default class SessionRepositoryService {
       | 'placesAvailable'
       | 'sportId'
       | 'userId'
+      | 'latitude'
+      | 'longitude'
     >,
   ): Promise<SessionEntity> {
     {
@@ -87,6 +90,8 @@ export default class SessionRepositoryService {
           creator: sessionData.userId
             ? { connect: { userId: sessionData.userId } }
             : undefined,
+          latitude: sessionData.latitude,
+          longitude: sessionData.longitude,
         },
         include: this.include,
       });

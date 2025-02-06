@@ -34,4 +34,12 @@ export class SessionDto {
   @ApiProperty()
   @IsNotEmpty()
   sportId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  latitude: number;
+
+  @ApiProperty()
+  @IsNumber()
+  longitude: number;
 }

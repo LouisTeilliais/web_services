@@ -44,6 +44,8 @@ export default class SessionControllerService {
       placesAvailable: sessionDto.placesAvailable,
       sportId: sessionDto.sportId,
       userId: userId,
+      latitude: sessionDto.latitude,
+      longitude: sessionDto.longitude,
     });
   }
 
