@@ -45,6 +45,8 @@ jobs:
 
       - name: Run API
         run: npm start
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
 
       - name: 🔬 Run API tests
         run: npm test
